@@ -525,6 +525,8 @@ input::placeholder {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
+    position: relative;
+    z-index: 1001;
 }
 
 .notification-btn:hover {

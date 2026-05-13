@@ -44,6 +44,7 @@ class CountdownApp {
         const box = document.getElementById('notificationBox');
         const icon = document.getElementById('notificationIcon');
         const eventName = document.getElementById('notificationEvent');
+        const closeBtn = document.getElementById('notificationBtn');
         
         icon.textContent = icons[type] || icons.normal;
         eventName.textContent = event.name;
@@ -53,22 +54,24 @@ class CountdownApp {
         
         if ('Notification' in window && Notification.permission === 'granted') {
             new Notification('倒计时结束', {
-                body: event.name,
-                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">⏰</text></svg>',
-                sound: 'default'
+                body: event.name
             });
         }
         
-        const closeBtn = document.getElementById('notificationBtn');
-        closeBtn.onclick = () => {
+        const handleClose = () => {
             overlay.classList.remove('show');
+            closeBtn.removeEventListener('click', handleClose);
+            overlay.removeEventListener('click', handleOverlayClick);
         };
         
-        overlay.onclick = (e) => {
+        const handleOverlayClick = (e) => {
             if (e.target === overlay) {
-                overlay.classList.remove('show');
+                handleClose();
             }
         };
+        
+        closeBtn.addEventListener('click', handleClose);
+        overlay.addEventListener('click', handleOverlayClick);
     }
 
     init() {
